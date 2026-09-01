@@ -119,4 +119,106 @@ ALTER DATABASE BD_Demo_Recovery SET TARGET_RECOVERY_TIME = 5 SECONDS;
 
 ALTER DATABASE BD_Demo_Recovery SET TARGET_RECOVERY_TIME = 120 SECONDS;
 
+-----------------------------------------------------------------
 
+-- Respaldo FULL de la base de datos
+USE master;
+GO
+BACKUP DATABASE BD_Demo_Recovery TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_FULL.bak'
+
+--------------------------------------------------------------
+-- Simular cambios en base de datos
+
+USE BD_Demo_Recovery;
+GO
+INSERT INTO dbo.Sales (Customer, Amount, Note)
+VALUES (N'Client 3', 1000.00, 'pre diff 1');
+
+--------------------------------------------------------------
+-- Respaldo diferencial de la base de datos
+
+USE master;
+GO
+BACKUP DATABASE BD_Demo_Recovery TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_DIFF.bak' WITH DIFFERENTIAL;
+--------------------------------------------------------------
+-- Simular cambios en base de datos
+USE BD_Demo_Recovery;
+GO
+INSERT INTO dbo.Sales (Customer, Amount, Note)
+VALUES (N'Client 4', 1000.00, 'pre diff 2');
+
+--------------------------------------------------------------
+-- Segundo respaldo diferencial de la base de datos
+USE master;
+GO
+BACKUP DATABASE BD_Demo_Recovery TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_DIFF2.bak' WITH DIFFERENTIAL;
+
+--------------------------------------------------------------
+-- Simular cambios en base de datos
+USE BD_Demo_Recovery;
+GO
+INSERT INTO dbo.Sales (Customer, Amount, Note)
+VALUES (N'Client 5', 1000.00, 'pre log 1');
+
+--------------------------------------------------------------
+-- Respaldo de log de transacciones de la base de datos
+
+USE master;
+GO
+BACKUP LOG BD_Demo_Recovery TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG1.trn';
+
+--------------------------------------------------------------
+-- Simular cambios en base de datos
+USE BD_Demo_Recovery;
+GO
+INSERT INTO dbo.Sales (Customer, Amount, Note)
+VALUES (N'Client 6', 1000.00, 'pre log 2');
+
+--------------------------------------------------------------
+-- Segundo respaldo de log de transacciones de la base de datos
+USE master;
+GO
+BACKUP LOG BD_Demo_Recovery TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG2.trn';
+
+--------------------------------------------------------------
+-- Simular cambios en base de datos
+USE BD_Demo_Recovery;
+GO
+INSERT INTO dbo.Sales (Customer, Amount, Note)
+VALUES (N'Client 7', 1000.00, 'final');
+
+--------------------------------------------------------------
+-- Verificar datos en tabla Sales
+USE BD_Demo_Recovery;
+GO
+SELECT * FROM dbo.Sales;
+
+--------------------------------------------------------------
+-- Simular fallo catastrófico
+
+USE master;
+
+IF DB_ID(N'BD_Demo_Recovery') IS NOT NULL
+BEGIN
+    ALTER DATABASE BD_Demo_Recovery SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE BD_Demo_Recovery;
+END;
+--------------------------------------------------------------
+-- Recuperacion de la base de datos usando los respaldos creados
+
+USE MASTER;
+GO
+
+RESTORE DATABASE BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_FULL.bak' WITH NORECOVERY;
+GO
+RESTORE DATABASE BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_DIFF2.bak' WITH NORECOVERY;
+GO
+RESTORE LOG BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG1.trn' WITH NORECOVERY;
+GO
+RESTORE LOG BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG2.trn' WITH RECOVERY;
+
+--------------------------------------------------------------
+-- Verificar datos en tabla Sales
+USE BD_Demo_Recovery;
+GO
+SELECT * FROM dbo.Sales;
