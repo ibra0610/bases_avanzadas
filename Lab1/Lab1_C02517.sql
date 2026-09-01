@@ -222,3 +222,31 @@ RESTORE LOG BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanza
 USE BD_Demo_Recovery;
 GO
 SELECT * FROM dbo.Sales;
+
+----------------------------------------------------------------
+-- Paso adicional, backup de Tail log
+
+USE MASTER;
+GO
+
+-- PASO ADICIONAL:
+BACKUP LOG BD_Demo_Recovery
+TO DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_TAIL.trn'
+WITH NORECOVERY;
+GO
+
+RESTORE DATABASE BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_FULL.bak' WITH NORECOVERY;
+GO
+RESTORE DATABASE BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_DIFF2.bak' WITH NORECOVERY;
+GO
+RESTORE LOG BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG1.trn' WITH NORECOVERY;
+GO
+RESTORE LOG BD_Demo_Recovery FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_LOG2.trn' WITH NORECOVERY;
+
+-- PASO ADICIONAL:
+-- Restaurar el TAIL LOG que contiene las transacciones
+RESTORE LOG BD_Demo_Recovery
+FROM DISK = 'C:\Users\Ibra\Desktop\UCR\Bases Avanzadas\bases_avanzadas\Lab1\C02517_BD_Demo_Recovery_TAIL.trn'
+WITH RECOVERY;
+GO
+---------------------------------------------------------------
