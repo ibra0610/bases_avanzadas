@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="CM_WWI_Destino"
+  DTS:DTSID="{34DE5D9A-CEA4-4F70-BF64-C5C0C532ED94}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=localhost\DEV_MSSQL_JAVIER;User ID=sa;Initial Catalog=WWI_DW;Provider=SQLNCLI11.1;Application Name=SSIS-WWI_ETL-{34DE5D9A-CEA4-4F70-BF64-C5C0C532ED94}localhost\DEV_MSSQL_JAVIER.WWI_DW.sa;Auto Translate=False;">
+      <DTS:Password
+        DTS:Name="Password"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAjyFX3WYMBkiCY7Vwa1HXyQAAAAACAAAAAAAQZgAAAAEAACAAAABKT107G7UwtBIM6Hi/LoYUKBXU/mULkop2Cfen9cn5ngAAAAAOgAAAAAIAACAAAABZq3R9uVK1vIcnHaww1HqZSCDaBsgK8WKN7QFi5SpEPIAAAACzzhVUN0R8p71PtWE+kTifdQW55EbmulKwj3xsg6h4P8kkegCjJspbTne+7Ck44GA/dkOobuJnqUNn/pKfXryntZH6FuJ8H6Xq1I6owqytDNHFhlFGLdGtyeXZkuAo46ybhQRJYpZsZKQ8iYk8U9XEt1SDmFbYCV35WB1i86s/U0AAAAC0qdeYCD79+fZsSVVHYdy3QvkFHLVKwcUAxhe8BqPIbAoGkuKHJ27Z0ZR4by7v8NhFdk9is9f4G5fgRp96462Y</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>
